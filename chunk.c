@@ -16,6 +16,7 @@ void init_chunk(Chunk* chunk) {
     init_value_array(&chunk->constants);
 }
 
+// Here we are adding a byte to the chunk
 void write_chunk(Chunk* chunk, uint8_t byte, int line) {
     if (chunk->capacity < chunk->count + 1) {
         int old_capacity = chunk->capacity;

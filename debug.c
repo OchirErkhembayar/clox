@@ -18,6 +18,7 @@ static int simple_instruction(const char* name, int offset) {
 }
 
 static int constant_instruction(const char* name, Chunk* chunk, int offset) {
+    // We go + 1 because the first byte is the opcode, next byte is the index of the constant
     uint8_t constant = chunk->code[offset + 1];
     // We print the name and the value of the constant
     printf("%-16s %4d '", name, constant);

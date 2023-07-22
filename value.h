@@ -17,8 +17,10 @@
  *  Also it is because we can't store 4 bytes into an odd address because of
  *  alignment issues.
  *
- * Values
- * ------
+ *  For this interpreter, we'll use a single type to represent all values.
+ *
+ * Value
+ * -----
  *  We can abstract the values in the language into a single type, Value.
  *  This is incase we want to change the representation of values in the future.
  *
@@ -29,7 +31,7 @@
  *
  *  This constant table we'll call the "value array".
  *
- *  It has a capacity, count, and a pointer to the values.
+ *  It has a capacity, count, and a pointer to the values (value array).
  */
 
 typedef double Value;
@@ -37,7 +39,7 @@ typedef double Value;
 typedef struct {
   int capacity;
   int count;
-  Value* values;
+  Value* values; // Array of pointers to values
 } ValueArray;
 
 void init_value_array(ValueArray* array);

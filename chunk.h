@@ -49,6 +49,8 @@
  * 1. The number of elements in the array.
  * 2. The capacity of the array.
  * 3. The array itself.
+ * 4. The line number of the instruction.
+ * 5. The constant table. // see value.h
  */
 
 typedef enum {
@@ -57,11 +59,11 @@ typedef enum {
 } OpCode;
 
 typedef struct {
-    int count;
-    int capacity;
-    uint8_t* code;
-    int* lines;
-    ValueArray constants;
+    int count; // The number of elements in the array.
+    int capacity; // The number of elements the array can hold before it needs to grow.
+    uint8_t* code; // The bytecode array (the opcodes)
+    int* lines; // Array of line numbers for each instruction
+    ValueArray constants; // The constant table
 } Chunk;
 
 void init_chunk(Chunk* chunk);
