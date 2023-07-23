@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -Wextra -pedantic -std=c2x
 
 TARGET = clox
-SRCS = main.c chunk.c memory.c debug.c value.c
+SRCS = main.c chunk.c memory.c debug.c value.c vm.c
 
 OBJS = $(SRCS:.c=.o)
 

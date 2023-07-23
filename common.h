@@ -1,6 +1,8 @@
 #ifndef clox_common_h
 #define clox_common_h
 
+#define DEBUG_TRACE_EXECUTION
+
 /*
  * This gives us the bool type, true and false constants.
  */

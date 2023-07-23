@@ -54,8 +54,13 @@
  */
 
 typedef enum {
-    OP_CONSTANT, // Load a constant value from the constant pool
-    OP_RETURN, // Return from the current function.
+    OP_CONSTANT, // Add a value to the stack
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
+    OP_NEGATE, // Unary negation
+    OP_RETURN,
 } OpCode;
 
 typedef struct {
