@@ -1,6 +1,6 @@
 # Notes
 
-## Source -> **COMPILER** -> Bytecode -> **VIRTUAL MACHINE** -> execution
+## Source -> **SCANNER** -> Tokens -> **COMPILER** -> Bytecode chunk -> **VIRTUAL MACHINE** -> execution
 
 ## Chapter 14
 ### Chunks of bytecode
@@ -82,3 +82,35 @@ comes after that on to the stack
 13. The VM will pop a value off the stack (2), then again (4) and then divide 4 by 2 and push that onto the stack
 
 Now the stack has 4 at the top, ready to be stored in a variable or printed or maybe it's just part of a larger expression **(1 + 3 / 2) + 5**
+
+## Chapter 16
+### Scanning on demand
+
+#### Reading source code
+- We can either operate in a REPL or read source code and execute it
+- We'll now need a new scanner to generate tokens for the compiler to turn into chunks of bytecode
+
+##### Reading files
+- We just use C's standard library functions to allocate a block of memory for the user's program and store the source code there
+
+##### Scanning
+- This time we shouldn't scan the entire file in one go.
+- This would be really inefficient because we'll have to have some sort of dynamic array to keep track of everything
+- Also it's not necessary because we only need to see 1 token ahead
+
+##### One token at a time
+- The simplest solutio is to only scan a token when the compiler needs one
+- Then we just scan a single token, pass it to the compiler and wait for it to ask for another
+- This way we don't have to dynamically allocate anything or pass by reference
+- We define a struct Token which has a type, where in the source string it starts and its length
+- TokenType enum tells us what type of token it is
+- We have a large switch statement to get the TokenType
+
+##### Keywords and 
+- In order to efficiently find out what keyword we need we use a **deterministic finite automaton (DFA)**
+- This is also known a a **state machine**
+- We basically look at whether or not the first character of the next token matches the first characters
+  of any of our keywords
+- If it does then we check what keywords it could be based on that letter and continue until we either
+  have a keyword or not
+- If we don't then that means it was an identifier
