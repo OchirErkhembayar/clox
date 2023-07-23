@@ -68,7 +68,10 @@ static InterpretResult run() {
             case OP_SUBTRACT: BINARY_OP(-); break;
             case OP_MULTIPLY: BINARY_OP(*); break;
             case OP_DIVIDE: BINARY_OP(/); break;
-            case OP_NEGATE: push(-pop()); break;
+            case OP_NEGATE: {
+                *(vm.stack_top - sizeof(Value) / 8) *= -1;
+                break;
+            };
             case OP_RETURN: {
                 print_value(pop()); // Debugging hax
                 printf("\n");
