@@ -60,7 +60,6 @@ static void run_file(const char* path) {
     if (result == INTERPRET_RUNTIME_ERROR) exit(70);
 }
 
-
 int main(int argc, const char* argv[]) {
     // Set the stack pointer the the top of the stack (very beginning)
     init_VM();

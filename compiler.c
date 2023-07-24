@@ -257,7 +257,7 @@ bool compile(const char *source, Chunk* chunk) {
     parser.had_error = false;
     parser.panic_mode = false;
 
-    advance(); // Consumed the first token
+    advance();
     expression();
     consume(TOKEN_EOF, "Expect end of expression.");
     end_compiler();

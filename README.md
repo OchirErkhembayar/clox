@@ -2,6 +2,20 @@
 
 ## Source -> **SCANNER** -> Tokens -> **COMPILER** -> Bytecode chunk -> **VIRTUAL MACHINE** -> execution
 
+## Operation (executing a single expression)
+
+### 1. Initialisation
+- Open the file and measure its length and get a buffer to that file
+- Initialise a **chunk** to store the bytecodes
+- Compile the source code into bytes
+
+### 2. Compilation
+- Initialise the scanner
+- Advance once, consume the first token
+- Advance again, consume the second token
+- Check the ParseFn associated with the second token
+  - The second token must be a binary operator since we're 
+
 ## Chapter 14
 ### Chunks of bytecode
 
