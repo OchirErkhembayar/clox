@@ -114,3 +114,12 @@ Now the stack has 4 at the top, ready to be stored in a variable or printed or m
 - If it does then we check what keywords it could be based on that letter and continue until we either
   have a keyword or not
 - If we don't then that means it was an identifier
+
+## Chapter 17
+### Compiling expressions
+
+#### Top-down operator precedence parsing
+
+#### Infix expressions
+- Infix expressions are those where we don't know what type of expressions we're in until we're in the middle of it
+- For example in **1 + 3** we don't know that we're in a binary expression until after we have parsed the **1**
