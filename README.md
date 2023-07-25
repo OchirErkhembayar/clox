@@ -4,6 +4,8 @@
 
 ## Operation (executing a single expression)
 
+### This is how a simple expression like **1 + 3** is executed
+
 ### 1. Initialisation
 - Open the file and measure its length and get a buffer to that file
 - Initialise a **chunk** to store the bytecodes
@@ -12,9 +14,47 @@
 ### 2. Compilation
 - Initialise the scanner
 - Advance once, consume the first token
+  The parser's current token is now the first token and second is still uninitialised
+- Our default precedence is set to **PREC_ASSIGNMENT**
 - Advance again, consume the second token
-- Check the ParseFn associated with the second token
-  - The second token must be a binary operator since we're 
+  The parser's current token is now **+** and the previous is **1**
+- Check the ParseFn associated with the previous token (1)
+- This token must have a prefix function or else we've got something like 33
+  as two tokens instead of 1 token which makes no sense
+- Now we execute the prefix function **number()**
+- The number function will cast the previous token into a **double** and call **emit_constant**
+- This will call **emit_bytes** which will call **emite_byte** twice o
+  The first one the **OP_CONST** op-code
+  And then create a new **Value** to hold the **double** and add it to the **value_array** of the chunk
+  then emit the index of the new value as a byte
+- **emit_byte** essentially creates a new **OP_CODE** which is just a **uint8_t** and adds it to the **codes**
+  of the **chunk**. It is either an **OP_CODE** or an **operand** which is an index of the **value_array*
+- Now the compiler will get a new rule by getting from the rules table using the index of the current token 
+  and compare the precedence of that one against the current one
+  - If the precedence is greater than or equal to the first rule then we can continue
+  - Otherwise we will stop.
+- We will continue because the current token is **+** which has a higher precedence level than an **PREC_ASSIGNMENT**
+- Now we will advance. Setting the current token to **3** and the previous to **+**
+- Now we will call the **infix()** of the rule corresponding to **+** which is **binary()**
+- We will get the rule for the binary operator
+- We will now call **parse_precedence** again with the precedence of **+** rule which is **PREC_TERM** + 1 (for left-associativity)
+- This will make us advance once so that we're currently at **TOKEN_EOF** and previous is **3**
+- Again, the prefix rule of this is **number** so we will call that, adding **OP_CONST** and the index of **3** onto the chunk
+- Because **TOKEN_NUMBER** has **PREC_NONE** which is lower than **PREC_TERM + 1** we will stop and go back to **binary**
+- Now we just do a switch statement to emit the correct **OP_CODE** for **+**
+- Our chunk now has everything we need to execute
+
+### 3. VM
+- We start by reading the first byte which should always be an **OP_CODE**
+- Now we'll use a switch statement to check what we should do
+- In our case it will be **OP_CONST**
+- We will read the constant by using the **IP** and then incrementing it then using that to get the value stored in the **value_array**
+- We then push it on to the stack
+- The next instruction will be **OP_CONST** and we repeat
+  - This is because in **binary()** in the compiler we made sure to add the constant before the **OP_ADD**
+- The next instruction will be **OP_ADD**
+- We will pop the previous two constants off the stack, add them together then push that back on to the stack
+- Because our interpeter is a prototype we just print the last value on the stack
 
 ## Chapter 14
 ### Chunks of bytecode
