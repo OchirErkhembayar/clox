@@ -55,10 +55,17 @@
 
 typedef enum {
     OP_CONSTANT, // Add a value to the stack
+    OP_NIL,
+    OP_TRUE,
+    OP_FALSE,
+    OP_EQUAL,
+    OP_GREATER,
+    OP_LESS,
     OP_ADD,
     OP_SUBTRACT,
     OP_MULTIPLY,
     OP_DIVIDE,
+    OP_NOT,
     OP_NEGATE, // Unary negation
     OP_RETURN,
 } OpCode;

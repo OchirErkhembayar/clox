@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "scanner.h"
+#include "value.h"
 
 typedef struct {
     const char* start;
