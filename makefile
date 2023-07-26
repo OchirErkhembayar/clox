@@ -1,4 +1,3 @@
- Thanks to Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
 TARGET_EXEC := final_program
 
 BUILD_DIR := ./build
@@ -40,9 +39,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 run:
-	make
 	./build/final_program
-
 
 .PHONY: clean
 clean:
