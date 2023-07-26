@@ -3,6 +3,10 @@
 
 #include "common.h"
 
+// 
+#define ALLOCATE(type, count) \
+    (type*)reallocate(NULL, 0, sizeof(type) * (count))
+
 /* Grow capacity
  * ------------
  *  8 is a bit arbitrary. We could use any number.
