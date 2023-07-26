@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "object.h"
 #include "memory.h"
 #include "value.h"
-#include "object.h"
 
 void init_value_array(ValueArray* array) {
     array->capacity = 0;
