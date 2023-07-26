@@ -39,3 +39,12 @@ Important notes
 ### fclose
 - Ensures any pending data is written to the file
 - Releases any system resources associated with that file
+
+## fprintf
+- fprintf(FILE* file, const char* format, ...);
+
+## va_list
+- **va_list** is used with the **<stdarg.h>** library to handle multiple line arguments
+- acts as a handler or iterator
+- this acts in conjunction with **vprintf** for us. **vprintf** accepts a format and a series of arguments to print
+
