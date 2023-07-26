@@ -2,10 +2,13 @@
 #define clox_memory_h
 
 #include "common.h"
+#include "object.h"
 
 // 
 #define ALLOCATE(type, count) \
     (type*)reallocate(NULL, 0, sizeof(type) * (count))
+
+#define FREE(type, pointer) reallocate(pointer, sizeof(type), 0)
 
 /* Grow capacity
  * ------------
@@ -45,5 +48,6 @@
  * it may be dangerous because you lose type safety but can be quite useful
  */
 void* reallocate(void* pointer, size_t old_size, size_t new_size);
+void free_objects();
 
 #endif

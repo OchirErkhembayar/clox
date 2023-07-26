@@ -8,9 +8,9 @@
 #include "debug.h"
 #include "compiler.h"
 #include "value.h"
-#include "vm.h"
 #include "memory.h"
 #include "object.h"
+#include "vm.h"
 
 VM vm;
 
@@ -33,6 +33,7 @@ static void runtime_error(const char* format, ...) {
 
 void init_VM() {
     reset_stack();
+    vm.objects = NULL;
 }
 
 void free_VM() {

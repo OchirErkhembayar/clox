@@ -178,3 +178,9 @@ Now the stack has 4 at the top, ready to be stored in a variable or printed or m
 - The next instruction will be **OP_ADD**
 - We will pop the previous two constants off the stack, add them together then push that back on to the stack
 - Because our interpeter is a prototype we just print the last value on the stack
+
+
+## Chapter 20
+### Hash Tables
+
+####
