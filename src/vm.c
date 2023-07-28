@@ -7,6 +7,7 @@
 #include "common.h"
 #include "debug.h"
 #include "compiler.h"
+#include "table.h"
 #include "value.h"
 #include "memory.h"
 #include "object.h"
@@ -34,9 +35,12 @@ static void runtime_error(const char* format, ...) {
 void init_VM() {
     reset_stack();
     vm.objects = NULL;
+    init_table(&vm.strings);
 }
 
 void free_VM() {
+    free_table(&vm.strings);
+    free_objects();
 }
 
 /* The stack points to the next available spot at the top
