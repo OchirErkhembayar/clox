@@ -14,6 +14,7 @@ typedef struct {
     uint8_t* ip; // The instruction pointer. Keeps track of the next operation to be executed
     Value stack[STACK_MAX]; // The stack of values 
     Value* stack_top; // Pointer to the top of the stack
+    Table globals;
     Table strings;
     Obj* objects;
 } VM;

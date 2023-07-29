@@ -1,1 +1,4 @@
-1 + 3
+var tea = "tea";
+var milk = "milk";
+
+print tea + " with " + milk;
