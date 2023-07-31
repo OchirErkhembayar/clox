@@ -37,7 +37,7 @@ typedef enum {
     PREC_PRIMARY,
 } Precedence;
 
-typedef void (*ParseFn)(); // Function type that takes no args and returns nothing
+typedef void (*ParseFn)(bool can_assign); // Function type that takes no args and returns nothing
 
 typedef struct {
     ParseFn prefix;
@@ -154,7 +154,7 @@ static ParseRule* get_rule(TokenType type);
  * The operator has been consumed and is in previous
  * The entire left hand expression has also been compiled and the value is on the stack
 */
-static void binary() {
+static void binary(bool can_assign) {
     TokenType operator_type = parser.previous.type;
     ParseRule* rule = get_rule(operator_type);
     // We want 1 higher because binary operators are left-associative
@@ -175,7 +175,7 @@ static void binary() {
     }
 }
 
-static void literal() {
+static void literal(bool can_assign) {
     switch (parser.previous.type) {
         case TOKEN_FALSE: emit_byte(OP_FALSE); break;
         case TOKEN_NIL: emit_byte(OP_NIL); break;
@@ -184,17 +184,17 @@ static void literal() {
     }
 }
 
-static void grouping() {
+static void grouping(bool can_assign) {
     expression();
     consume(TOKEN_RIGHT_PAREN, "Expect ')' after expression.");
 }
 
-static void number() {
+static void number(bool can_assign) {
     double value = strtod(parser.previous.start, NULL);
     emit_constant(NUMBER_VAL(value));
 }
 
-static void string() {
+static void string(bool can_assign) {
     // +1, and -2 are to get rid of the opening and closing quotes
     emit_constant(
         OBJ_VAL(
@@ -203,16 +203,22 @@ static void string() {
     );
 }
 
-static void named_variable(Token name) {
+static void named_variable(Token name, bool can_assign) {
     uint8_t arg = identifier_constant(&name);
-    emit_bytes(OP_GET_GLOBAL, arg);
+
+    if (can_assign && match(TOKEN_EQUAL)) {
+        expression();
+        emit_bytes(OP_SET_GLOBAL, arg);
+    } else {
+        emit_bytes(OP_SET_GLOBAL, arg);
+    }
 }
 
-static void variable() {
-    named_variable(parser.previous);
+static void variable(bool can_assign) {
+    named_variable(parser.previous, can_assign);
 }
 
-static void unary() {
+static void unary(bool can_assign) {
     // The unary token is already consumed so it's sitting in previous
     TokenType operator_type = parser.previous.type;
 
@@ -278,13 +284,18 @@ static void parse_precedence(Precedence precedence) {
         error("Expected expression.");
         return;
     }
-
-    prefix_rule();
+    
+    bool can_assign = precedence <= PREC_ASSIGNMENT;
+    prefix_rule(can_assign);
 
     while (precedence <= get_rule(parser.current.type)->precedence) {
         advance();
         ParseFn infix_rule = get_rule(parser.previous.type)->infix;
-        infix_rule();
+        infix_rule(can_assign);
+    }
+
+    if (can_assign && match(TOKEN_EQUAL)) {
+        error("Invalid assignment target.");
     }
 }
 
@@ -347,12 +358,10 @@ static void synchronize() {
             case TOKEN_IF:
             case TOKEN_WHILE:
             case TOKEN_PRINT:
-            case TOKEN_RETURN: {
+            case TOKEN_RETURN:
                 return;
-            }
-            default: {
-                ;
-            }
+            default:
+                ; // do nothing
         }
 
         advance();

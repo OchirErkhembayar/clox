@@ -132,9 +132,18 @@ static InterpretResult run() {
             }
             case OP_DEFINE_GLOBAL: {
                 ObjString* name = READ_STRING();
+                print_value(peek(0));
                 table_set(&vm.globals, name, peek(0));
                 pop();
                 break;
+            }
+            case OP_SET_GLOBAL: {
+                ObjString* name = READ_STRING();
+                if (table_set(&vm.globals, name, peek(0))) {
+                    table_delete(&vm.globals, name);
+                    runtime_error("Undefine variable '%s'.", name->chars);
+                    return INTERPRET_RUNTIME_ERROR;
+                }
             }
             case OP_EQUAL: {
                 Value b = pop();
